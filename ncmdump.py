@@ -78,7 +78,7 @@ def dump(file_path):
     return file_name
 
 
-class dumper(threading.Thread):
+class Dumper(threading.Thread):
     def __init__(self, fpath, basket):
         super().__init__()
         self._fpath = fpath
@@ -119,9 +119,7 @@ def printBar(now:int, total:int, threads:int):
     print(bar_text, end='', flush=True)
 
 
-if __name__ == '__main__':
-    if not os.path.exists('./unlock'):
-        os.mkdir('./unlock')
+def main():
     dirs = os.listdir()
     musicFiles = dict()
     for i in dirs:
@@ -129,7 +127,13 @@ if __name__ == '__main__':
             if os.path.splitext(i)[1] == '.ncm':
                 musicFiles[os.path.abspath(i)] = 0
     totalCount = len(musicFiles)
+    if totalCount == 0:
+        print('\033[33m未找到需要解密的文件 nothing to do...\033[0m')
+        input('按下回车继续...')
+        return
     process = [0, 0, 0]
+    if not os.path.exists('./unlock'):
+        os.mkdir('./unlock')
     while True:
         count = 0
         tmp = None
@@ -139,8 +143,7 @@ if __name__ == '__main__':
             if count < 5 and musicFiles[key] == 0:
                 upperPrint('解密中...\t{}'.format(key))
                 musicFiles[key] = 1
-                tmp = dumper(key, musicFiles)
-                tmp.start()
+                Dumper(key, musicFiles).start()
                 count += 1
         fcount = 0
         for key in musicFiles:
@@ -154,3 +157,7 @@ if __name__ == '__main__':
         
     print('\n\033[32m解密完成，存放在unlock目录中\033[0m')
     input('按下回车继续...')
+
+
+if __name__ == '__main__':
+    main()
