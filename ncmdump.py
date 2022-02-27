@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from multiprocessing import cpu_count
 import threading
 import binascii
 import struct
@@ -134,13 +135,14 @@ def main():
     process = [0, 0, 0]
     if not os.path.exists('./unlock'):
         os.mkdir('./unlock')
+    maxCount = cpu_count()
     while True:
         count = 0
         tmp = None
         for key in musicFiles:
             if musicFiles[key] == 1:
                 count += 1
-            if count < 5 and musicFiles[key] == 0:
+            if count < maxCount and musicFiles[key] == 0:
                 upperPrint('解密中...\t{}'.format(key))
                 musicFiles[key] = 1
                 Dumper(key, musicFiles).start()
