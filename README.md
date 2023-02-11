@@ -4,6 +4,8 @@
 ## 特色
 - 使用多线程进行解锁，速度更快
 
+**现在推荐使用解密速度更快的[ncmpp](https://github.com/Majjcom/ncmpp)和[ncmppGui](https://github.com/Majjcom/ncmppGui)**
+
 ## 使用
 在音乐目录下运行代码，将自动解锁该目录下的所有ncm文件，并存放在`./unlock`目录下
 
